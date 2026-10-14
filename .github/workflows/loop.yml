@@ -9,7 +9,10 @@ jobs:
   start-loop:
     runs-on: ubuntu-latest
     steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
       - name: Ping GitHub to restart
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh workflow run run_voter.yml
+        run: gh workflow run run_voter.yml --repo ${{ github.repository }}
