@@ -1,22 +1,32 @@
 name: Trigger Next Run
+
 on:
   workflow_run:
     workflows: ["Run Kokushibo Official Voter"]
     types:
       - completed
 
-# This section gives the file permission to trigger the next run
-permissions:
-  actions: write
-
 jobs:
   start-loop:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v4
-
-      - name: Ping GitHub to restart
+      - name: Check and Update Counter
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh workflow run run_voter.yml --repo ${{ github.repository }}
+          GH_TOKEN: ${{ secrets.MY_WORKFLOW_PAT }}
+        run: |
+          CURRENT_COUNT=$(gh api repos/${{ github.repository }}/actions/variables/LOOP_COUNTER --jq '.value' || echo "0")
+          
+          if [ "$CURRENT_COUNT" -le 0 ]; then
+            echo "Loop limit reached! Stopping."
+            exit 0
+          fi
+          
+          NEXT_COUNT=$((CURRENT_COUNT - 1))
+          
+          gh api \
+            --method PATCH \
+            -H "Accept: application/vnd.github+json" \
+            /repos/${{ github.repository }}/actions/variables/LOOP_COUNTER \
+            -f value="$NEXT_COUNT"
+            
+          gh workflow run run_voter.yml --repo ${{ github.repository }}
