@@ -5,6 +5,10 @@ on:
     types:
       - completed
 
+# This section gives the file permission to trigger the next run
+permissions:
+  actions: write
+
 jobs:
   start-loop:
     runs-on: ubuntu-latest
