@@ -58,9 +58,9 @@ async def send_vote(session, semaphore, stats):
 
 async def main():
     print("==================================================", flush=True)
-    print(f"🚀 OFFICIAL VOTER RUNNER | Target: {TARGET_VOTES:,} votes", flush=True)
-    print(f"🎯 Target URL: {FORM_URL}", flush=True)
-    print(f"📌 Entry ID: {ENTRY_ID} = {CHOICE_VALUE}", flush=True)
+    print(f" OFFICIAL VOTER RUNNER | Target: {TARGET_VOTES:,} votes", flush=True)
+    print(f" Target URL: {FORM_URL}", flush=True)
+    print(f" Entry ID: {ENTRY_ID} = {CHOICE_VALUE}", flush=True)
     print("==================================================", flush=True)
 
     semaphore = asyncio.Semaphore(CONCURRENT_LIMIT)
@@ -80,7 +80,7 @@ async def main():
             await asyncio.gather(*tasks)
 
     print("==================================================", flush=True)
-    print(f"🎉 RUN COMPLETE! Successful: {stats['success']:,} | Failed: {stats['failed']:,}", flush=True)
+    print(f" RUN COMPLETE! Successful: {stats['success']:,} | Failed: {stats['failed']:,}", flush=True)
     print("==================================================", flush=True)
 
 if __name__ == "__main__":
