@@ -1,4 +1,4 @@
-name: Run Kokushibo Official Voter
+name: Run Voter
 
 on:
   workflow_dispatch:
